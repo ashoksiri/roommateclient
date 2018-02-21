@@ -13,7 +13,7 @@
         <div class="tile">
             <h3 class="tile-title">Line Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="chart chart-line embed-responsive-item" chart-type="StackedBar" chart-data="stackdata" chart-labels="stacklabels" chart-options="stackoptions" chart-series="stackseries"></canvas>
+                <canvas class="chart chart-line embed-responsive-item" chart-type="StackedBar" chart-data="stackdata" chart-labels="ct.chartLineLabels" chart-options="stackoptions" chart-series="stackseries"></canvas>
             </div>
         </div>
     </div>
@@ -29,7 +29,8 @@
         <div class="tile">
             <h3 class="tile-title">Radar Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="chart chart-radar embed-responsive-item" chart-data="piedata" chart-labels="pielabels" chart-options="pieoptions"></canvas>
+                <canvas id="radar" class="chart chart-radar" chart-options="ct.chartRadarOptions" chart-colours="vt.chartRadarColours" chart-data="vt.chartRadarCharts" chart-labels="vt.chartRadarLabels">
+                        </canvas>
             </div>
         </div>
     </div>

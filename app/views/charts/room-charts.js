@@ -63,29 +63,34 @@
         .module('roommate')
         .controller('chartsController', chartsController)
 
-    chartsController.$inject = ['$location'];
+    chartsController.$inject = ['$location', '$http', '$state', '$scope'];
+
+    //https://codepen.io/it-labs/pen/BjQVym --refer this
 
     function chartsController($location, $http, $state, $scope) {
-        $scope.stacklabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        $scope.stackseries = ['2015', '2016'];
-        $scope.stackoptions = {
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                }],
-                yAxes: [{
-                    stacked: true
-                }]
-            }
+        var vt = this;
+        console.log(vt);
+        // Line Chart
+
+        vt.chartLineLabels = ["January", "February", "March", "April", "May", "June", "July"];
+
+        vt.chartLineSeries = ['New Users', 'Global Quizz Results in %'];
+
+        vt.chartLineCharts = [];
+
+        // API Request
+        $http.get('http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2').
+        then(function(data) {
+            angular.forEach(data, function(chartLineData) {
+                vt.chartLineCharts.push(chartLineData.chart)
+            });
+        });
+
+        vt.chartLineOptions = {
+            maintainAspectRatio: false,
+            responsive: true
         };
 
-        $scope.stackdata = [
-            [65, 59, 90, 81, 56, 55, 40],
-            [28, 48, 40, 19, 96, 27, 100]
-        ];
-
-        $scope.pielabels = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-        $scope.piedata = [300, 500, 100];
-        $scope.pieoptions = { legend: { display: false } };
+        vt.chartLineColours = ['#494750', '#cc3321'];
     }
 })();

@@ -5,29 +5,92 @@
     <meta charset="UTF-8">
     <title>Stacked Bar chart</title>
     <link href="./public/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            padding: 20px;
+        }
+    </style>
 </head>
 
-<body ng-app="examples">
-    <br/>
-    <div class="container"></div>
-    <div id="container" class="container">
-        <div class="row" ng-controller="StackedBarCtrl">
-            <div class="col-lg-6 col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Stacked Bar Chart</div>
-                    <div class="panel-body">
-                        <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" chart-options="options" chart-series="series"></canvas>
-                    </div>
-                </div>
+<body ng-app="App">
+    <div ng-controller="chartsCtrl as vt">
+        <div class="row">
+            <div class="col-sm-12">
+                <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels" chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+              </canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <canvas id="radar" class="chart chart-radar" chart-options="vt.chartRadarOptions" chart-colours="vt.chartRadarColours" chart-data="vt.chartRadarCharts" chart-labels="vt.chartRadarLabels">
+              </canvas>
+            </div>
+            <div class="col-sm-6">
+                <canvas id="pie" class="chart chart-pie" chart-options="vt.chartPieOptions" chart-data="vt.chartPieCharts" chart-colours="vt.chartPieColours" chart-labels="vt.chartPieLabels"></canvas>
             </div>
         </div>
     </div>
-
-    <script src="./public/js/angular.min.js"></script>
-    <script src="./public/js/ui-bootstrap-tpls.min.js"></script>
-    <script src="./public/js/Chart.js"></script>
-    <script src="./public/js/angular-chart.js"></script>
-    <script src="./app.js"></script>
 </body>
+
+<script src="./public/js/angular.min.js"></script>
+<script src="./public/js/ui-bootstrap-tpls.min.js"></script>
+<script src="./public/js/Chart.js"></script>
+<script src="./public/js/angular-chart.js"></script>
+
+</body>
+<script>
+    var app = angular.module('App', ["chart.js"]);
+    app.controller('chartsCtrl', function($http) {
+        var vt = this;
+
+        // Line Chart
+
+        vt.chartLineLabels = ["January", "February", "March", "April", "May", "June", "July"];
+
+        vt.chartLineSeries = ['New Users', 'Global Quizz Results in %'];
+
+        vt.chartLineCharts = [];
+
+        // API Request
+        $http.get('http://www.json-generator.com/api/json/get/clayCfTkzm?indent=2').
+        then(function(data) {
+            angular.forEach(data, function(chartLineData) {
+                vt.chartLineCharts.push(chartLineData.chart)
+            });
+        });
+
+        vt.chartLineOptions = {
+            maintainAspectRatio: false,
+            responsive: true
+        };
+
+        vt.chartLineColours = ['#494750', '#cc3321'];
+
+        vt.chartRadarLabels = ["Adobe PDF", "Video", "Text File", "Box.com", "Presentation"];
+
+        // Radar Chart
+        vt.chartRadarCharts = [
+            [65, 59, 90, 81, 56]
+        ];
+
+        vt.chartRadarOptions = {
+            maintainAspectRatio: true,
+            responsive: true
+        }
+
+        vt.chartRadarColours = ['#cc3321'];
+
+        // Pie Chart
+        vt.chartPieLabels = ["Powerful-Strength Concentrate", "Hydro-Plumping Re-Texturizing Serum", "Iris Extract Activating Treatment Essence", "Daily Reviving Concentrate"];
+        vt.chartPieCharts = [152, 51, 68, 210];
+        vt.chartPieOptions = {
+            maintainAspectRatio: true,
+            responsive: true
+        }
+        vt.chartPieColours = ['#494750', '#999999', '#cc3321', '#2fb467'];
+
+    });
+</script>
 
 </html>
