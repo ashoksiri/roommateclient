@@ -1,0 +1,87 @@
+<section class="material-half-bg">
+    <div class="cover"></div>
+</section>
+<section class="login-content" ng-controller="loginController">
+    <div class="logo">
+        <h1>[[ title ]]</h1>
+    </div>
+    <div class="login-box">
+        <form class="login-form" name="loginForm" ng-submit="login(credentials)" method="post">
+
+            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+            <div class="form-group">
+                <label class="control-label">USERNAME</label>
+                <input class="form-control" type="email" name="username" placeholder="Email" autofocus ng-model="credentials.username" ng-required="true" ng-minlength="4" ng-blur="validate_email(credentials)">
+                <span style="color:red" ng-if="loginForm.username.$error.email">
+                    Not a valid email.
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">PASSWORD</label>
+                <input class="form-control" type="password" placeholder="Password" name="password" ng-model="credentials.password" ng-required="true">
+            </div>
+
+            <span class="alert alert-warning" ng-if="warning"> {{ warning }}</span>
+            <span class="alert alert-danger" ng-if="error"> {{ error }}</span>
+            <div class="form-group">
+                <div class="utility">
+                    <div class="animated-checkbox">
+                        <label>
+                  <input type="checkbox"><span class="label-text">Stay Signed in</span>
+                </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <p class="semibold-text mb-2"><a href="#">Forgot Password ?</a></p>
+                <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Register</a></p>
+            </div>
+
+            <div class="form-group btn-container">
+                <button class="btn btn-primary btn-block" type="submit" ng-disabled="loginForm.$invalid" id="login-btn">
+                    <i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN &nbsp; &nbsp;<i id="login-spinner-login" ></i></button>
+
+            </div>
+        </form>
+        <form class="forget-form" name="registerForm" action="{% url 'register' %}" method="post" autocomplete="off">
+
+            <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Register</h3>
+            <div class="form-group">
+                <label class="control-label">EMAIL</label>
+                <input class="form-control" type="email" placeholder="Email" name="username" ng-model="new.username" ng-required="true">
+                <span style="color:red" ng-if="registerForm.username.$error.email">
+                    Please Provide Email.
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <input class="form-control" type="password" placeholder="Password" name="password" ng-model="new.password" ng-required="true" ng-minlength="6">
+            </div>
+            <div class="form-group">
+                <label class="control-label">Repeat Password</label>
+                <input class="form-control" type="password" placeholder="confirm Password" name="confirmPassword" ng-model="new.confirmPassword" ng-required="true" ng-minlength="6">
+                <span style="color: red" ng-if="passwordMatch">
+                    passwords doesn't match
+                    
+                </span>
+                <span class="alert alert-danger" ng-if="error"> {{ error }}</span>
+            </div>
+            <div class="form-group text-right">
+                <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Already have Account ?</a></p>
+            </div>
+            <div class="form-group btn-container">
+                <button class="btn btn-primary btn-block" id="register-form-btn" type="submit" ng-disabled="registerForm.$invalid"><i class="fa fa-user-plus fa-lg fa-fw"></i>Register &nbsp; &nbsp;<i id="login-spinnerregister" class=""></i></button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+<script>
+    $('.login-box [data-toggle="flip"]').click(function() {
+        $('.login-box').toggleClass('flipped');
+        return false;
+    });
+</script>
+<script src="/app/views/login/login.controller.js"></script>
