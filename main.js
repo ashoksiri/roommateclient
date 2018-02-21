@@ -38,7 +38,7 @@
             url: '/charts',
             templateUrl: '/app/views/charts/charts.view.html',
             controller: 'chartsController',
-            controllerAs: 'ct',
+            controllerAs: 'vt',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('charts'); // Resolve promise and load before view 

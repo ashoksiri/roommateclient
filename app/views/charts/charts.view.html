@@ -13,23 +13,25 @@
         <div class="tile">
             <h3 class="tile-title">Line Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="chart chart-line embed-responsive-item" chart-type="StackedBar" chart-data="stackdata" chart-labels="ct.chartLineLabels" chart-options="stackoptions" chart-series="stackseries"></canvas>
+                <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-line embed-responsive-item" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels" chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+                        </canvas>
             </div>
         </div>
     </div>
-    <!-- <div class="col-md-6">
+    <div class="col-md-6">
         <div class="tile">
             <h3 class="tile-title">Bar Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
+                <canvas chart-options="vt.chartLineOptions" id="line" class="chart chart-bar embed-responsive-item" chart-data="vt.chartLineCharts" chart-labels="vt.chartLineLabels" chart-legend="true" chart-series="vt.chartLineSeries" chart-colours="vt.chartLineColours">
+                        </canvas>
             </div>
         </div>
-    </div> -->
+    </div>
     <div class="col-md-6">
         <div class="tile">
             <h3 class="tile-title">Radar Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas id="radar" class="chart chart-radar" chart-options="ct.chartRadarOptions" chart-colours="vt.chartRadarColours" chart-data="vt.chartRadarCharts" chart-labels="vt.chartRadarLabels">
+                <canvas id="radar" class="chart chart-radar embed-responsive-item" chart-options="vt.chartRadarOptions" chart-colours="vt.chartRadarColours" chart-data="vt.chartRadarCharts" chart-labels="vt.chartRadarLabels">
                         </canvas>
             </div>
         </div>
@@ -38,7 +40,7 @@
         <div class="tile">
             <h3 class="tile-title">Polar Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="chart chart-polar embed-responsive-item" chart-data="piedata" chart-labels="pielabels" chart-options="pieoptions"></canvas>
+                <canvas id="polar" class="chart chart-polarArea embed-responsive-item" chart-options="vt.chartPieOptions" chart-data="vt.chartPieCharts" chart-colours="vt.chartPieColours" chart-labels="vt.chartPieLabels"></canvas>
             </div>
         </div>
     </div>
@@ -46,7 +48,7 @@
         <div class="tile">
             <h3 class="tile-title">Pie Chart</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="chart chart-pie embed-responsive-item" chart-data="piedata" chart-labels="pielabels" chart-options="pieoptions"></canvas>
+                <canvas id="pie" class="chart chart-pie embed-responsive-item" chart-options="vt.chartPieOptions" chart-data="vt.chartPieCharts" chart-colours="vt.chartPieColours" chart-labels="vt.chartPieLabels"></canvas>
             </div>
         </div>
     </div>
