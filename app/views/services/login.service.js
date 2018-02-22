@@ -10,7 +10,8 @@
     function UserService($http, $rootScope) {
         var apiUrl = $rootScope.apiUrl;
         var service = {
-            login: loginService
+            login: loginService,
+            access_token: accessToken
         };
 
         return service;
@@ -23,6 +24,14 @@
                 data: credentials
             })
 
+        }
+
+        function accessToken(credentials) {
+            return $http({
+                method: 'POST',
+                url: apiUrl + 'o/token/',
+                data: credentials
+            })
         }
     }
 })();

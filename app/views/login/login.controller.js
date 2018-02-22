@@ -21,6 +21,19 @@
                 .login(data)
                 .then(function(response) {
                     console.log(response.data);
+                    if (response.data.status_code === 200) {
+                        console.log(response.data);
+                        response.data.password = data.password;
+                        UserService
+                            .access_token(response.data)
+                            .then(function(response) {
+                                console.log(response);
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            })
+                    }
+
                 })
                 .catch(function(error) {
                     console.log(error.data);

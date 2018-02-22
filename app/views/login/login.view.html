@@ -11,7 +11,7 @@
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
             <div class="form-group">
                 <label class="control-label">USERNAME</label>
-                <input class="form-control" type="email" name="username" placeholder="Email" autofocus ng-model="credentials.username" ng-required="true" ng-minlength="4" ng-blur="validate_email(credentials)">
+                <input class="form-control" type="email" name="username" placeholder="Email" autofocus ng-model="credentials.email" ng-required="true" ng-minlength="4" ng-blur="validate_email(credentials)">
                 <span style="color:red" ng-if="loginForm.username.$error.email">
                     Not a valid email.
                 </span>
