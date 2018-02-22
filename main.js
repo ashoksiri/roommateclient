@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    var apiUrl = 'http://localhost:8000/accounts/';
+
     angular
         .module('roommate')
         .config(configConfig)
@@ -18,7 +20,8 @@
             templateUrl: '/app/views/login/login.view.html',
             controller: 'loginController',
             resolve: {
-                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                loadMyCtrl: ['$ocLazyLoad', '$rootScope', function($ocLazyLoad, $rootScope) {
+                    $rootScope.apiUrl = apiUrl;
                     return $ocLazyLoad.load('login'); // Resolve promise and load before view 
                 }]
             }
