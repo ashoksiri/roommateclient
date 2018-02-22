@@ -27,10 +27,12 @@
         }
 
         function accessToken(credentials) {
+
             return $http({
                 method: 'POST',
                 url: apiUrl + 'o/token/',
-                data: credentials
+                data: credentials,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
         }
     }
