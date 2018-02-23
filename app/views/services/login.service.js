@@ -4,35 +4,27 @@
     angular
         .module('roommate')
         .factory('UserService', UserService)
-        //.factory('SessionService', SessionService)
-        // .factory('sessionInjector', ['$http', function($http) {
-        //     var sessionInjector = {
-        //         request: function(config) {
-        //             console.log(config);
-        //             // if (!SessionService.isAnonymus) {
-        //             //     config.headers['x-session-token'] = SessionService.token;
-        //             // }
-        //             return config;
-        //         }
-        //     };
-        //     return sessionInjector;
-        // }])
-        // .config(['$httpProvider', function($httpProvider) {
-        //     $httpProvider.interceptors.push('sessionInjector');
-        // }]);
 
-    SessionService.$inject = ['$http', '$rootScope'];
+    UserService.$inject = ['$q', '$http', '$rootScope'];
 
-    UserService.$inject = ['$http', '$rootScope'];
-
-    function UserService($http, $rootScope) {
-        var apiUrl = $rootScope.apiUrl;
+    function UserService($q, $http, $rootScope) {
         var service = {
             login: loginService,
-            access_token: accessToken
+            logout: logoutService,
+            register: registerSerivce
         };
 
         return service;
+
+        function generateToken(auth_tokens) {
+            return $http({
+                method: 'POST',
+                url: apiUrl + 'o/token/',
+                data: auth_tokens,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
+
+        }
 
         function loginService(credentials) {
 
@@ -40,23 +32,44 @@
                 method: 'POST',
                 url: apiUrl + 'login/',
                 data: credentials
-            })
+            }).then(function(res) {
+                if (res.status === 200) {
+                    var auth_tokens = {
+                        client_id: res.data.client_id,
+                        client_secret: res.data.client_secret,
+                        grant_type: res.data.grant_type
+                    }
+                    localStorage.auth_tokens = JSON.stringify(auth_tokens);
+                    auth_tokens.username = res.data.username;
+                    auth_tokens.password = credentials.password;
 
+                    return generateToken(auth_tokens);
+                }
+            });
         }
 
-        function accessToken(credentials) {
-
+        function logoutService() {
+            var token = JSON.parse(localStorage.getItem('token')) || {};
+            var auth_tokens = JSON.parse(localStorage.getItem('auth_tokens')) || {};
+            console.log(token);
             return $http({
                 method: 'POST',
-                url: apiUrl + 'o/token/',
-                data: credentials,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                url: apiUrl + 'logout/',
+                data: {
+                    token: token.access,
+                    client_id: auth_tokens.client_id,
+                    client_secret: auth_tokens.client_secret
+                }
+            });
+        }
+
+        function registerSerivce(data) {
+
+            return $http({
+                method: 'post',
+                url: apiUrl + 'register/',
+                data: data,
             })
         }
-    }
-
-    function SessionService($http, $rootScope) {
-        var isAnonymus = false;
-        var token = '123456';
     }
 })();

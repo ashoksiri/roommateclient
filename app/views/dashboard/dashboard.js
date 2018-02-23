@@ -5,9 +5,29 @@
         .module('roommate')
         .controller('dashboardController', dashboardController)
 
-    dashboardController.$inject = ['$location', '$http', '$state', '$scope'];
+    dashboardController.$inject = ['$location', '$http', '$state', '$scope', 'UserService', 'toaster'];
 
-    function dashboardController($location, $http, $state, $scope) {
+    function dashboardController($location, $http, $state, $scope, UserService, toaster) {
+
+        var db = this;
+
+        db.logout = function() {
+            UserService
+                .logout()
+                .then(function(res) {
+                    console.log(res.status);
+                    if (res.status === 200) {
+                        toaster.pop('success', 'status', res.data.status_message);
+                        console.log(res.data);
+                        localStorage.clear();
+                        $state.go('login');
+
+                    }
+                }, function(error) {
+                    console.log(error);
+                });
+        }
+
         $scope.stacklabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $scope.stackseries = ['2015', '2016'];
         $scope.stackoptions = {

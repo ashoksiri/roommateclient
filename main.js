@@ -1,7 +1,7 @@
+apiUrl = 'http://localhost:8000/accounts/';
+
 (function() {
     'use strict';
-
-    var apiUrl = 'http://localhost:8000/accounts/';
 
     angular
         .module('roommate')
@@ -19,6 +19,7 @@
             url: '/login',
             templateUrl: '/app/views/login/login.view.html',
             controller: 'loginController',
+            controllerAs: 'user',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', '$rootScope', function($ocLazyLoad, $rootScope) {
                     $rootScope.apiUrl = apiUrl;
@@ -30,6 +31,7 @@
             url: '/home',
             templateUrl: '/app/views/dashboard/dashboard.view.html',
             controller: 'dashboardController',
+            controllerAs: 'db',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load('dashboard'); // Resolve promise and load before view 
@@ -77,18 +79,18 @@
                 ]
             })
             // $httpProvider.interceptors.push('sessionInjector');
-        $httpProvider.interceptors.push(['$q', '$scope', '$window', '$injector', function($q, $scope, $window, $injector) {
+            // $httpProvider.interceptors.push(['$q', '$scope', '$window', '$injector', function($q, $scope, $window, $injector) {
 
-            var $auth = $inject.inject('$auth');
+        //     //var $auth = $inject.inject('$auth');
 
-            return {
-                request: function(config) {
-                    var token = JSON.parse(sessionStorage.getItem('token'));
-                    console.log($auth.title);
-                    return config;
-                }
-            }
-        }])
+        //     return {
+        //         request: function(config) {
+        //             var token = JSON.parse(sessionStorage.getItem('token'));
+        //             console.log(title);
+        //             return config;
+        //         }
+        //     }
+        // }])
 
     }
 

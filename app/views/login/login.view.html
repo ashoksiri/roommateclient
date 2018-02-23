@@ -1,12 +1,12 @@
 <section class="material-half-bg">
     <div class="cover"></div>
 </section>
-<section class="login-content" ng-controller="loginController">
+<section class="login-content">
     <div class="logo">
         <h1>[[ title ]]</h1>
     </div>
     <div class="login-box">
-        <form class="login-form" name="loginForm" ng-submit="login(credentials)" method="post">
+        <form class="login-form" name="loginForm" ng-submit="user.login(credentials)" method="post">
 
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
             <div class="form-group">
@@ -44,34 +44,41 @@
 
             </div>
         </form>
-        <form class="forget-form" name="registerForm" action="{% url 'register' %}" method="post" autocomplete="off">
-
+        <form class="forget-form" name="signupForm" ng-submit="user.register(formData)">
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Register</h3>
             <div class="form-group">
                 <label class="control-label">EMAIL</label>
-                <input class="form-control" type="email" placeholder="Email" name="username" ng-model="new.username" ng-required="true">
-                <span style="color:red" ng-if="registerForm.username.$error.email">
-                    Please Provide Email.
-                </span>
+                <input class="form-control" type="email" placeholder="Email" name="username" ng-model="formData.email" ng-required="true">
+                <div class="alert alert-warning from-control" ng-if="signupForm.username.$error.email">
+                    provide proper email...
+                </div>
+
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-class="{'has-error':formData.password.$invalid && !formData.password.$pristine}">
                 <label class="control-label">Password</label>
-                <input class="form-control" type="password" placeholder="Password" name="password" ng-model="new.password" ng-required="true" ng-minlength="6">
+                <input class="form-control" type="password" id="password" name="password" ng-model="formData.password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" placeholder="password" ng-required="true" />
+                <div class="alert alert-warning" ng-show="signupForm.password.$error.minlength">
+                    Passwords must be between 8 and 20 characters.
+                </div>
+                <div class="alert alert-warning" ng-show="!signupForm.password.$error.minlength && signupForm.password.$error.pattern">
+                    Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)
+                </div>
+
             </div>
-            <div class="form-group">
+
+            <div class="form-group" ng-class="{'has-error':formData.password_c.$invalid && !formData.password_c.$pristine}">
                 <label class="control-label">Repeat Password</label>
-                <input class="form-control" type="password" placeholder="confirm Password" name="confirmPassword" ng-model="new.confirmPassword" ng-required="true" ng-minlength="6">
-                <span style="color: red" ng-if="passwordMatch">
-                    passwords doesn't match
-                    
-                </span>
-                <span class="alert alert-danger" ng-if="error"> {{ error }}</span>
+                <input class="form-control" type="password" id="password_c" name="password_c" ng-model="formData.password_c" placeholder="confirm password" valid-password-c="formData.password" ng-required="true" />
+                <div class="alert alert-danger" ng-show="formData.password_c && formData.password_c != formData.password">
+                    Passwords do not match...
+                </div>
+
             </div>
             <div class="form-group text-right">
-                <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Already have Account ?</a></p>
+                <p class="semibold-text mb-2"><a href="#" id="acount_exist" data-toggle="flip">Already have Account ?</a></p>
             </div>
             <div class="form-group btn-container">
-                <button class="btn btn-primary btn-block" id="register-form-btn" type="submit" ng-disabled="registerForm.$invalid"><i class="fa fa-user-plus fa-lg fa-fw"></i>Register &nbsp; &nbsp;<i id="login-spinnerregister" class=""></i></button>
+                <button class="btn btn-primary btn-block" id="register-form-btn" type="submit" ng-disabled="signupForm.$invalid"><i class="fa fa-user-plus fa-lg fa-fw"></i>Register &nbsp; &nbsp;<i id="login-spinner-register" class=""></i></button>
             </div>
         </form>
 

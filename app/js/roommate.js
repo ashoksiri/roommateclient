@@ -1,7 +1,9 @@
 (function() {
     'use strict';
 
-    var roommate = angular.module('roommate', ['ui.router', 'oc.lazyLoad', 'chart.js', 'ui.bootstrap']).
+    var roommate = angular.module('roommate', ['ui.router', 'oc.lazyLoad', 'chart.js',
+        'ui.bootstrap', 'toaster', 'ngAnimate', 'anim-in-out'
+    ]).
     config(function(ChartJsProvider) {
             // Configure all charts
             ChartJsProvider.setOptions({
@@ -45,12 +47,12 @@
 
             function($rootScope, $state, $transitions) {
                 $transitions.onSuccess({}, function(transition) {
-                    var user = localStorage.getItem('user');
-                    if (user === null) {
+                    var token = localStorage.getItem('token');
+                    if (token === null) {
                         $state.go('login');
                         return true;
                     }
-                    if (user && transition.to().name === 'login') {
+                    if (token && transition.to().name === 'login') {
                         $state.go('home');
                         return false;
                     }

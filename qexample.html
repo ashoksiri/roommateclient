@@ -27,7 +27,32 @@
         then(function(respponse) {
             console.log(respponse);
         })
-    }]).config(['$httpProvider', function($httpProvider) {
+    }]).provider('$auth', function() {
+
+        this.$get = ['$http', function($http) {
+
+            return {
+                refresh: function() {
+                    var token = JSON.parse($window.localStorage.token || null);
+
+                    return $http.post('/auth/refresh', {
+                            accessToken: token.accessToken,
+                            refreshToken: token.refreshToken
+                        })
+                        .then(function(res) {
+                            var token = {
+                                access: res.data.access_token,
+                                refresh: res.data.refresh_token,
+                                type: res.data.token_type,
+                                expire: Date.now() + parseInt(res.data.expires_in) * 1000 // calculate time of expire
+                            };
+                            $window.localStorage.token = JSON.stringify(token);
+                            return token;
+                        });
+                }
+            }
+        }]
+    }).config(['$httpProvider', function($httpProvider) {
 
         $httpProvider.interceptors.push(['$q', '$injector', '$timeout', function($q, $injector, $timeout) {
             var $auth;
@@ -39,8 +64,21 @@
             deffer.resolve("call");
             return {
                 request: function(config) {
-                    console.log(config);
-                    console.log($auth);
+                    config.headers = config.headers || {};
+                    var token = JSON.parse($window.localStorage.token || null);
+                    if (token) {
+                        // if token expire
+                        if (token.expire && token.expire < Date.now()) {
+                            // re-new token
+                            return $auth.refresh()
+                                .then(function(token) {
+                                    config.headers.Authorization = (token.type || 'Bearer') + token.access;
+                                    return config;
+                                });
+                        } else if (token.access) {
+                            config.headers.Authorization = (token.type || 'Bearer') + token.access;
+                        }
+                    }
                     return config;
                 }
             }
@@ -48,15 +86,6 @@
     }]);
 
 
-    myapp.provider('$auth', function() {
-
-        this.$get = ['$http', function($http) {
-
-            return {
-                title: "Provier"
-            }
-        }]
-    });
     //myApp.directive('myDirective', function() {});
     //myApp.factory('myService', function() {});
 </script>
