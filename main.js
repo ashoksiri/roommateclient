@@ -7,9 +7,9 @@
         .module('roommate')
         .config(configConfig)
 
-    configConfig.$inject = ['$interpolateProvider', '$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider'];
+    configConfig.$inject = ['$interpolateProvider', '$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider'];
 
-    function configConfig($interpolateProvider, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+    function configConfig($interpolateProvider, $stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider) {
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
 
@@ -60,22 +60,40 @@
         });
 
         $ocLazyLoadProvider.config({
-            'debug': true, // For debugging 'true/false'
-            'events': true, // For Event 'true/false'
-            'modules': [{ // Set modules initially
-                    name: 'login', // State1 module
-                    files: ['./app/views/login/login.controller.js']
-                },
-                { // Set modules initially
-                    name: 'dashboard', // State1 module
-                    files: ['./app/views/dashboard/dashboard.js']
-                },
-                { // Set modules initially
-                    name: 'charts', // State1 module
-                    files: ['./app/views/charts/room-charts.js']
+                'debug': true, // For debugging 'true/false'
+                'events': true, // For Event 'true/false'
+                'modules': [{ // Set modules initially
+                        name: 'login', // State1 module
+                        files: ['./app/views/login/login.controller.js']
+                    },
+                    { // Set modules initially
+                        name: 'dashboard', // State1 module
+                        files: ['./app/views/dashboard/dashboard.js']
+                    },
+                    { // Set modules initially
+                        name: 'charts', // State1 module
+                        files: ['./app/views/charts/room-charts.js']
+                    }
+                ]
+            })
+            // $httpProvider.interceptors.push('sessionInjector');
+        $httpProvider.interceptors.push(['$q', '$scope', '$window', '$injector', function($q, $scope, $window, $injector) {
+
+            var $auth = $inject.inject('$auth');
+
+            return {
+                request: function(config) {
+                    var token = JSON.parse(sessionStorage.getItem('token'));
+                    console.log($auth.title);
+                    return config;
                 }
-            ]
-        })
+            }
+        }])
+
     }
+
+
+
+
 
 }());

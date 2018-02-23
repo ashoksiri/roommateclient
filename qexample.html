@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body ng-app="myApp">
+    <div ng-controller="AppCtrl">
+        <h1>{{ message }}</h1>
+    </div>
+</body>
+<script src="./public/js/angular.min.js"></script>
+<script>
+    var myapp = angular.module('myApp', []);
+    myapp.controller('AppCtrl', ['$http', '$scope', '$rootScope', function($http, $scope, $rootScope) {
+        $scope.message = "This is sample Message";
+
+        $http.get('https://api.github.com/users/naorye/repos').
+        then(function(respponse) {
+            console.log(respponse);
+        })
+        $http.get('https://api.github.com/users/naorye/repos').
+        then(function(respponse) {
+            console.log(respponse);
+        })
+    }]).config(['$httpProvider', function($httpProvider) {
+
+        $httpProvider.interceptors.push(['$q', '$injector', '$timeout', function($q, $injector, $timeout) {
+            var $auth;
+            var deffer = $q.defer();
+            deffer.promise.then(function() {
+                $auth = $injector.get('$auth');
+                console.log($auth);
+            });
+            deffer.resolve("call");
+            return {
+                request: function(config) {
+                    console.log(config);
+                    console.log($auth);
+                    return config;
+                }
+            }
+        }]);
+    }]);
+
+
+    myapp.provider('$auth', function() {
+
+        this.$get = ['$http', function($http) {
+
+            return {
+                title: "Provier"
+            }
+        }]
+    });
+    //myApp.directive('myDirective', function() {});
+    //myApp.factory('myService', function() {});
+</script>
+
+</html>

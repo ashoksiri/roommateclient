@@ -13,6 +13,8 @@
             console.log(data);
         }
 
+        console.log($http.login);
+
         $timeout(function() {
             console.log("timeout called");
         }, 1000)
